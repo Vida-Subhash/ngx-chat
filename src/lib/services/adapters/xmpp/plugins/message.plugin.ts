@@ -67,6 +67,8 @@ export class MessagePlugin extends AbstractXmppPlugin {
     }
 
     private handleMessageStanza(messageStanza: MessageWithBodyStanza, archiveDelayElement?: Stanza) {
+       console.log("handlemessagestanza",messageStanza);
+
         const isAddressedToMe = this.xmppChatAdapter.chatConnectionService.userJid.bare()
             .equals(parseJid(messageStanza.attrs.to).bare());
         const messageDirection = isAddressedToMe ? Direction.in : Direction.out;
@@ -88,7 +90,12 @@ export class MessagePlugin extends AbstractXmppPlugin {
             datetime,
             delayed: !!delayElement,
             fromArchive: messageFromArchive,
+            data: "subhash",
+            // groupId: messageStanza.getChildText('groupId').trim(),
+            // groupJid: messageStanza.getChildText('groupJid').trim(),
+            // groupImageUrl: messageStanza.getChildText('groupImageUrl').trim(),
         };
+        console.log("created msg",message);
 
         const messageReceivedEvent = new MessageReceivedEvent();
         this.xmppChatAdapter.plugins.forEach(plugin => plugin.afterReceiveMessage(message, messageStanza, messageReceivedEvent));

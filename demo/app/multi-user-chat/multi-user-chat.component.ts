@@ -41,6 +41,8 @@ export class MultiUserChatComponent {
     }
 
     updateOccupantJid(enteredJid: string) {
+        console.log("entered jid",enteredJid);
+
         try {
             this.occupantJid = jid(enteredJid);
             this.occupantJidInput.control.setErrors(null);
@@ -50,6 +52,7 @@ export class MultiUserChatComponent {
     }
 
     async joinRoom(occupantJid: JID) {
+        console.log("JID", occupantJid);
         this.selectedRoom = await this.multiUserChatPlugin.joinRoom(occupantJid);
         this.occupantJid = occupantJid;
         this.occupantJidText = occupantJid.toString();

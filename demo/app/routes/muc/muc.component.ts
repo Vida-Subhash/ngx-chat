@@ -113,6 +113,8 @@ export class MucComponent implements OnInit, OnDestroy {
     }
 
     async joinRoom(roomJid: JID) {
+        console.log("join romm id",roomJid);
+        
         const room = await this.multiUserChatPlugin.joinRoom(roomJid);
         this.selectedRoomSubject.next(room);
     }

@@ -7,3 +7,10 @@ export function id(): string {
     }
     return i;
 }
+
+
+export function  unixTimestap():string {
+    let time;
+    time =   Math.floor(Date.now() / 1000);
+    return time;
+   }

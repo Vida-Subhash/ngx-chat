@@ -31,5 +31,18 @@ export interface MessageWithBodyStanza extends Stanza {
         from?: string;
         type?: string;
         id?: string;
+        groupId?:string;
+        groupJid?:string;
+        groupImageUrl?:string;
     };
+}
+
+export interface TypingStanza extends Stanza {
+    attrs: {
+        to?: string;
+        from?: string;
+        type?: string;
+        id?: string;
+
+    }
 }

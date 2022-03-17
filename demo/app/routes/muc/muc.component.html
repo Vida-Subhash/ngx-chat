@@ -14,6 +14,7 @@
                     <small>JID: {{room.jid.toString()}}</small>
                 </div>
                 <div>
+                    <span><b>Subhash</b></span>
                     <button *ngIf="!currentRoom || currentRoom?.roomJid.equals(room.jid)"
                             (click)="joinRoom(room.jid)">Join
                     </button>

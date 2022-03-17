@@ -30,6 +30,7 @@ import {
 } from '../../../../../core/form';
 import { XmppResponseError } from '../../xmpp-response.error';
 import { mucNs, mucAdminNs, mucOwnerNs, mucRoomConfigFormNs, mucUserNs } from './multi-user-chat-constants';
+import { Injectable } from '@angular/core';
 
 /**
  * see:
@@ -185,6 +186,7 @@ class ModifyAffiliationsOrRolesStanzaBuilder extends AbstractStanzaBuilder {
  * For more details see:
  * @see https://xmpp.org/extensions/xep-0045.html
  */
+
 export class MultiUserChatPlugin extends AbstractXmppPlugin {
     readonly rooms$ = new BehaviorSubject<Room[]>([]);
     readonly message$ = new Subject<Room>();
@@ -267,6 +269,8 @@ export class MultiUserChatPlugin extends AbstractXmppPlugin {
 
     async joinRoom(occupantJid: JID): Promise<Room> {
         const {room} = await this.joinRoomInternal(occupantJid);
+        console.log("room desct", room);
+
         this.rooms$.next(this.rooms$.getValue());
         return room;
     }
@@ -383,15 +387,22 @@ export class MultiUserChatPlugin extends AbstractXmppPlugin {
         );
     }
 
-    async sendMessage(room: Room, body: string, thread?: string): Promise<void> {
+    async sendMessage(room: Room, body: string, thread?: string, data?:string): Promise<void> {
+        console.log( "thread..", room )
         const from = this.xmppChatAdapter.chatConnectionService.userJid.toString();
         const roomJid = room.roomJid.toString();
+        const id = room.name;
+        console.log("name",id);
+
+        // debugger
         const roomMessageStanza =
             thread
                 ? StanzaBuilder.buildRoomMessageWithThread(from, roomJid, body, thread)
+                // : StanzaBuilder.buildRoomMessageWithBody(from, roomJid, body);
                 : StanzaBuilder.buildRoomMessageWithBody(from, roomJid, body);
 
         for (const plugin of this.xmppChatAdapter.plugins) {
+            console.log("room msg", roomMessageStanza);
             plugin.beforeSendMessage(roomMessageStanza);
         }
 
@@ -697,6 +708,7 @@ export class MultiUserChatPlugin extends AbstractXmppPlugin {
         }
         const userJid = this.xmppChatAdapter.chatConnectionService.userJid;
         const occupantJid = parseJid(roomJid.local, roomJid.domain, roomJid.resource || userJid.local);
+        console.log("occupent", occupantJid);
 
         let roomInfo: Form | null = null;
         try {
@@ -777,14 +789,20 @@ export class MultiUserChatPlugin extends AbstractXmppPlugin {
             return false;
         }
 
+        const data = messageStanza.getChild('data').getChildElements()
+        console.log("data",data)
         const message: RoomMessage = {
             body: messageStanza.getChildText('body').trim(),
             datetime,
             id: messageStanza.attrs.id,
             from,
+            groupId: messageStanza.getChild('data').getChildText("groupId"),
+            groupJid: messageStanza.getChild('data').getChildText("groupId"),
+            groupImageUrl: messageStanza.getChild('data').getChildText("groupImageUrl"),
             direction: from.equals(room.occupantJid) ? Direction.out : Direction.in,
             delayed: !!delayElement,
             fromArchive: archiveDelayElement != null,
+            data: "subhash ramshetty",
         };
 
         const messageReceivedEvent = new MessageReceivedEvent();

@@ -167,7 +167,7 @@ export class XmppChatAdapter implements ChatService {
         return this.chatConnectionService.logOut();
     }
 
-    async sendMessage(recipient: Recipient, body: string) {
+    async sendMessage(recipient: Recipient, body: string, data?:string) {
         const trimmedBody = body.trim();
         if (trimmedBody.length === 0) {
             return;
@@ -199,6 +199,8 @@ export class XmppChatAdapter implements ChatService {
     }
 
     private onUnknownStanza(stanza: Stanza) {
+        console.log("unknown stanza", stanza);
+        
 
         let handled = false;
 

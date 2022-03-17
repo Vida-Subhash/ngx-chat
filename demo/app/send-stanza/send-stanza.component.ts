@@ -16,6 +16,7 @@ export class SendStanzaComponent {
     async sendStanza() {
         const request = parse(this.stanza);
         if (request) {
+            console.log("custom stanza", request)
             await this.chatService.chatConnectionService.send(request);
         }
     }

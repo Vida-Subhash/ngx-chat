@@ -5,6 +5,7 @@
             {{room.roomJid.bare().toString()}}:
             <button (click)="selectedRoom = room">Select</button>
             <button (click)="leaveRoom(room.occupantJid)" class="red">Leave</button>
+            <span>shetty -> {{room}}</span>
         </div>
 
         <ng-container *ngIf="selectedRoom">
@@ -122,6 +123,7 @@
                 </table>
             </details>
             <button (click)="joinRoom(room.jid)">join</button>
+            {{room|json}}
             <button (click)="subscribeWithMucSub(room.jid)">subscribe with MUC/Sub</button>
             <button (click)="unsubscribeFromMucSub(room.jid)">unsubscribe from MUC/Sub</button>
             <button (click)="destroyRoom(room.jid)">destroy</button>

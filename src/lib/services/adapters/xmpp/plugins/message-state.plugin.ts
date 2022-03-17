@@ -133,6 +133,9 @@ export class MessageStatePlugin extends AbstractXmppPlugin {
     }
 
     afterReceiveMessage(messageReceived: Message, stanza: MessageWithBodyStanza, messageReceivedEvent: MessageReceivedEvent): void {
+        console.log("msg recieved",messageReceived);
+        console.log("msg stanza",stanza);
+        console.log("msg event",messageReceivedEvent);
         const messageStateElement = stanza.getChild('message-state', STORAGE_NGX_CHAT_CONTACT_MESSAGE_STATES);
         if (messageStateElement) {
             // we received a message state or a message via carbon from another resource, discard it
@@ -167,6 +170,8 @@ export class MessageStatePlugin extends AbstractXmppPlugin {
     }
 
     handleStanza(stanza: Stanza): boolean {
+        console.log("stanza handle", stanza);
+        
         const {type, from} = stanza.attrs;
         const stateElement = stanza.getChild('message-state', STORAGE_NGX_CHAT_CONTACT_MESSAGE_STATES);
         if (type === 'chat' && stateElement) {

@@ -89,6 +89,8 @@ export class RosterListComponent implements OnInit {
     }
 
     onClickRecipient(recipient: Recipient) {
+        console.log("recipient",recipient);
+
         this.chatListService.openChat(recipient);
     }
 
